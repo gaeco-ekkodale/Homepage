@@ -1,0 +1,49 @@
+# Copyright (c) 2025 Ekkodale GmbH. All rights reserved.
+#
+# This file is part of the gaeco platform system.
+#
+# Use of this file is governed by the terms of the license
+# in LICENSE.md at the root of this repository.
+# Unauthorized copying, modification, distribution, or use of this file,
+# via any medium, is strictly prohibited except as expressly permitted
+# under that license.
+
+services:
+  homepage-client:
+    image: ${IMAGE_BASE_PATH}/homepage-client:${HOMEPAGE_CLIENT_TAG}
+    expose:
+      - 80
+    environment:
+      VITE_MOUNT_PATH: ${MOUNT_ROUTE}
+      # Service URLs the readiness checklist probes. Each one is optional: an unset
+      # variable degrades the matching step to "status unknown" instead of breaking
+      # the page.
+      VITE_GUIDELINE_API_URL: https://${GUIDELINE_SERVER_HOSTNAME}
+      VITE_ONTOLOGY_API_URL: https://${ONTOLOGY_SERVER_HOSTNAME}
+      VITE_USECASE_API_URL: https://${USECASE_SERVER_HOSTNAME}
+      VITE_ACCESS_API_URL: https://${ACCESS_SERVER_HOSTNAME}
+      VITE_INSTANCE_API_URL: https://${INSTANCE_SERVER_HOSTNAME}
+      # Routes the steps link to - must match each module's own MOUNT_ROUTE.
+      VITE_PLATFORMCONFIG_ROUTE: ${PLATFORMCONFIG_ROUTE}
+      VITE_USECASE_ROUTE: ${USECASE_ROUTE}
+      VITE_ACCESS_ROUTE: ${ACCESS_ROUTE}
+      VITE_INSTANCE_ROUTE: ${INSTANCE_ROUTE}
+      # Demo data is a local-deployment affordance only; off unless explicitly enabled.
+      VITE_ENABLE_DEMO_DATA: ${ENABLE_DEMO_DATA}
+    networks:
+      - gaeco-network
+    labels:
+      # The id MUST contain "homepage": PluginHost detects the start page plugin by
+      # substring match on the plugin id and renders it at route "/".
+      "app.mfe.id": "app-homepage"
+      "app.mfe.displayName": "Homepage Client"
+      "app.mfe.description": "Homepage Client Application"
+      "app.mfe.iconPath": "/homepage.svg"
+      "app.mfe.entrypointPath": "/assets/remoteEntry.js"
+      "app.mfe.exposedModule": "App"
+      "app.mfe.route": "${MOUNT_ROUTE}"
+
+networks:
+  gaeco-network:
+    name: ${ENVIRONMENT_NETWORK}
+    external: true

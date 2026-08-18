@@ -1,0 +1,25 @@
+# Copyright (c) 2025 Ekkodale GmbH. All rights reserved.
+#
+# This file is part of the gaeco platform system.
+#
+# Use of this file is governed by the terms of the license
+# in LICENSE.md at the root of this repository.
+# Unauthorized copying, modification, distribution, or use of this file,
+# via any medium, is strictly prohibited except as expressly permitted
+# under that license.
+
+# docker compose -f docker-compose.yml -f docker-compose-override.yml up -d
+name: homepage-service
+services:
+  homepage-client:
+    ports:
+      - "${HOMEPAGE_CLIENT_OUTERPORT}:80"
+    environment:
+      - VITE_GUIDELINE_API_URL=http://${GUIDELINE_SERVER_HOSTNAME}
+      - VITE_ONTOLOGY_API_URL=http://${ONTOLOGY_SERVER_HOSTNAME}
+      - VITE_USECASE_API_URL=http://${USECASE_SERVER_HOSTNAME}
+      - VITE_ACCESS_API_URL=http://${ACCESS_SERVER_HOSTNAME}
+      - VITE_INSTANCE_API_URL=http://${INSTANCE_SERVER_HOSTNAME}
+    build:
+      context: ../Client
+      dockerfile: _docker/Dockerfile

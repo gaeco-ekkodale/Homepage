@@ -1,0 +1,24 @@
+/*
+ * Copyright (c) 2025 Ekkodale GmbH. All rights reserved.
+ *
+ * This file is part of the gaeco platform system.
+ *
+ * Use of this file is governed by the terms of the license
+ * in LICENSE.md at the root of this repository.
+ * Unauthorized copying, modification, distribution, or use of this file,
+ * via any medium, is strictly prohibited except as expressly permitted
+ * under that license.
+ */
+
+@import "tailwindcss";
+
+/*
+ * The host injects --app-color-* so every micro-frontend follows the shell theme.
+ * The fallbacks keep the standalone dev server - and any host that does not set
+ * them - readable instead of resolving to transparent.
+ */
+@theme {
+  --color-primary: var(--app-color-primary, #0f059c);
+  --color-secondary: var(--app-color-secondary, #4338ca);
+  --color-light: var(--app-color-light, #ffffff);
+}
